@@ -19,13 +19,13 @@
 
 ---
 
-## 📌 Overview
+## Overview
 
 **ProtoBot** is an open, modular robotic platform designed to bridge the gap between expensive commercial research robots and accessible, hackable hardware. Built around a **dual-brain architecture** — a **Raspberry Pi 5** running ROS 2 as the high-level cognitive layer, and an **STM32 Nucleo N657X0-Q** running an RTOS as the real-time embedded controller — ProtoBot is engineered to be reconfigured, extended, and repurposed with minimal effort.
 
 Whether you are exploring SLAM, navigation, computer vision, manipulator control, multi-robot coordination, or embedded systems research, ProtoBot gives you a unified, documented, and community-supported platform to do it on.
 
-### 🎯 Key Goals
+### Key Goals
 
 - **Modularity first** — swap sensors, actuators, and compute modules without redesigning the base platform
 - **Research-grade** — suitable for academic research, lab environments, and serious experimentation
@@ -35,7 +35,7 @@ Whether you are exploring SLAM, navigation, computer vision, manipulator control
 
 ---
 
-## 🏗 System Architecture
+## System Architecture
 
 ProtoBot follows a **hierarchical dual-processor architecture** inspired by modern collaborative robotics systems:
 
@@ -79,7 +79,7 @@ ProtoBot follows a **hierarchical dual-processor architecture** inspired by mode
 
 ---
 
-## 🔧 Hardware
+##  Hardware
 
 ### Core Compute
 
@@ -114,7 +114,7 @@ ProtoBot follows a **hierarchical dual-processor architecture** inspired by mode
 | 11 | Chassis (custom / 3D printed) | 1 | Modular frame |
 | 12 | OLED Display 128x64 (optional) | 1 | Local status display |
 
-> 💡 A full Mouser/DigiKey BOM with part numbers is available in `/hardware/BOM.xlsx`
+>  A full Mouser/DigiKey BOM with part numbers is available in `/hardware/BOM.xlsx`
 
 ### Expansion Modules
 
@@ -133,7 +133,7 @@ ProtoBot supports hot-swappable physical modules attached to a standardized moun
 
 ---
 
-## 💻 Software Stack
+## Software Stack
 
 ### High-Level (Raspberry Pi 5)
 
@@ -192,7 +192,7 @@ protobot_ws/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -275,11 +275,11 @@ ros2 launch protobot_teleop keyboard_teleop.launch.py
 
 ---
 
-## 📱 ProtoBot Applications
+## ProtoBot Applications
 
 ProtoBot ships with a first-party application ecosystem designed to make robot programming and monitoring accessible to all skill levels.
 
-### 🖥 ProtoBot Desktop App
+### ProtoBot Desktop App
 
 > Built with **Electron + React + TypeScript**
 
@@ -301,7 +301,7 @@ npm run dev        # Development
 npm run build      # Production build
 ```
 
-### 📲 ProtoBot Mobile App
+### ProtoBot Mobile App
 
 > Built with **Flutter (iOS + Android)**
 
@@ -322,7 +322,7 @@ flutter build apk   # Android release build
 flutter build ios   # iOS release build
 ```
 
-### 🔌 ProtoBot API
+### ProtoBot API
 
 ProtoBot exposes a REST + WebSocket API from the RPi5 for third-party integrations:
 
@@ -340,7 +340,7 @@ WS   /stream/telemetry    → Real-time sensor telemetry
 
 ---
 
-## 🧪 Modular System
+##  Modular System
 
 ProtoBot's modularity operates at three levels:
 
@@ -372,7 +372,7 @@ ros2 launch protobot_bringup protobot.launch.py \
 
 ---
 
-## 🗂 Supported Research Use Cases
+## Supported Research Use Cases
 
 ProtoBot has been designed to support the following research and educational domains out of the box:
 
@@ -389,7 +389,7 @@ ProtoBot has been designed to support the following research and educational dom
 
 ---
 
-## 📡 ROS 2 Topics Reference
+## ROS 2 Topics Reference
 
 | Topic | Type | Direction | Description |
 |-------|------|-----------|-------------|
@@ -405,7 +405,7 @@ ProtoBot has been designed to support the following research and educational dom
 
 ---
 
-## 🛠 Development Guide
+## Development Guide
 
 ### Setting Up a Development Environment (Host PC)
 
@@ -448,7 +448,7 @@ ros2 launch protobot_bringup protobot_sim.launch.py
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are warmly welcome! This project thrives on community expertise.
 
@@ -479,7 +479,7 @@ Use GitHub Issues with the following labels:
 
 ---
 
-## 📄 License
+## License
 
 ProtoBot is released under the **ProtoBot Non-Commercial Open Recreation License (PNCORL)**.
 
@@ -493,9 +493,9 @@ See the full [LICENSE](./LICENSE) file for complete terms.
 
 ---
 
-## 👤 Author & Credits
+##Author & Credits
 
-**ProtoBot** was conceived, designed, and developed by its original author.
+**ProtoBot** was conceived, designed, and developed by its original author, Helmut Chaparro Sandoval.
 
 All hardware designs, firmware, software, documentation, and associated intellectual property are the exclusive commercial property of the original author. Recreational and research use is granted to the public under the terms described in the LICENSE file.
 
