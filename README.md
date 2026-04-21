@@ -39,9 +39,9 @@
   <a href="#authorship--commercial-rights"><b>License</b></a>
 </p>
 
-> **A modular robotics stack for research, education, and product work** — dual compute (**ROS 2** on **Raspberry Pi 5** + real-time **STM32 N657**), **POGO-style modularity** (sensors / effectors), **audio & vision** pipelines, **ProtoBot IDE** (Electron + TypeScript) as a unified shell for ROS 2 and MCU workflows, and **host terminals** that remain first-class for `ros2`, `colcon`, and `rviz2`.
+> **ProtoBot is a dual-compute robotics repository**: ROS 2 runs on Raspberry Pi 5 for high-level behavior, and STM32 handles deterministic sensing/actuation. The project is still in scaffold stage in several modules, but the structure is intended to keep SBC, MCU, simulation, IDE, and hardware artifacts evolving in the same codebase.
 
-**ProtoBot** is a professional-grade, **modular autonomous robotics platform**: high-level perception, navigation, and HMI on the **SBC**, deterministic sensing and actuation on the **MCU**, with a **CRCL-ProtoBot-v1** license model (commercial rights reserved — see [LICENSE.md](LICENSE.md)).
+**ProtoBot** targets modular autonomous robotics with a practical split: high-level perception/navigation/HMI on the SBC, and real-time control on the MCU. Licensing is **CRCL-ProtoBot-v1** (commercial rights reserved; details in [LICENSE.md](LICENSE.md)).
 
 Originally designed by Helmut Chaparro Sandoval — ProtoBot Project.
 
@@ -85,12 +85,26 @@ Identifiers (package names, topics, branch names) stay **ASCII English** (`proto
 
 ## Why ProtoBot
 
+Most robotics projects accumulate technical debt at subsystem boundaries (ROS graph, firmware, mechanical iterations, and tooling). ProtoBot is structured to reduce that friction by keeping interfaces, build flow, and hardware context in one place.
+
 | Goal | How this repo supports it |
 |------|---------------------------|
-| **One codebase for brain + realtime** | ROS 2 packages for perception, navigation, HMI, AI, power, and a bridge toward the MCU; STM32 tasks for sensors, actuators, power, and micro-ROS transport stubs. |
-| **Faster onboarding** | Colcon workspace, meta-package `protobot_core`, bringup launch, message package `protobot_msgs`, and heartbeat nodes to validate a build. |
-| **Consistent UX** | Shared design tokens (`design/tokens.*`) consumed by documentation and the IDE renderer. |
-| **Clear legal posture** | **CRCL-ProtoBot-v1**: commercial use is restricted to authorized holders; third parties may use non-commercially with attribution. See [LICENSE.md](LICENSE.md) and plain [LICENSE](LICENSE). |
+| **One repo for SBC + MCU integration** | ROS 2 packages and STM32 firmware stubs live together, so message definitions (`protobot_msgs`) and bridge contracts are versioned in the same place. This avoids silent drift between teams and makes interface changes auditable in PRs. |
+| **Earlier integration feedback** | Launch files, heartbeat nodes, CI for core interfaces, and simulation placeholders provide fast signals when assumptions break. That is cheaper than discovering incompatibilities during hardware bring-up. |
+| **Onboarding with a clear path** | New contributors can run a predictable flow (`colcon` workspace, bringup package, heartbeat binaries) without understanding all modules on day one. This lowers onboarding cost for students, interns, and new engineers. |
+| **Growth without reorganizing the repo** | The layout already separates concerns (`ros2_ws`, `firmware`, `hardware`, `simulation`, `ide`). Teams can replace stubs with production implementations incrementally instead of migrating structure mid-project. |
+| **Hardware is first-class context** | Mechanical CAD/3D and PCB folders are part of the same repository lifecycle. Software decisions and hardware revisions can be tracked together, which helps cross-discipline reviews and release planning. |
+| **Clear legal and contribution boundaries** | The project states licensing and attribution rules from the start (**CRCL-ProtoBot-v1**), reducing ambiguity for collaborators and protecting commercial rights. See [LICENSE.md](LICENSE.md) and [LICENSE](LICENSE). |
+
+### Current maturity snapshot
+
+| Area | Status |
+|------|--------|
+| ROS 2 workspace structure and package scaffold | **Implemented** |
+| Firmware folder structure and task placeholders | **Implemented (scaffold)** |
+| ProtoBot IDE shell (Electron + TS) | **In progress** |
+| Simulation assets | **Planned / placeholder** |
+| Mechanical and PCB repository layout | **Implemented (scaffold)** |
 
 ---
 
