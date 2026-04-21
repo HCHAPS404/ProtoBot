@@ -111,11 +111,6 @@ desktop.ini
 .idea/
 .vscode/
 
-# Cursor local metadata (optional)
-.cursor/
-.cursorignore
-.cursorindexingignore
-
 # -----------------------
 # Docs / static build outputs
 # -----------------------
