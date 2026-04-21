@@ -1,5 +1,50 @@
 # CRCL-ProtoBot-v1
-## Custom Restricted Commercial License
+### Custom Restricted Commercial License
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/Canonical_Text-LICENSE-1f2937?style=for-the-badge" alt="Canonical text in LICENSE" /></a>
+  <img src="https://img.shields.io/badge/Type-Custom%20Proprietary-7c3aed?style=for-the-badge" alt="Custom proprietary license" />
+  <img src="https://img.shields.io/badge/Commercial%20Use-Restricted-dc2626?style=for-the-badge" alt="Commercial use restricted" />
+</p>
+
+> Human-readable legal copy for repository browsing.  
+> In case of conflict or interpretation differences, the plain-text [`LICENSE`](LICENSE) file prevails.
+
+---
+
+## Quick summary (non-binding)
+
+| Topic | Status |
+|------|--------|
+| Personal learning | Allowed |
+| Academic / non-profit research | Allowed |
+| Modify source for non-commercial purposes | Allowed |
+| Redistribute non-commercial derivatives with attribution | Allowed |
+| Commercial use by third parties | Not allowed without written license |
+| Commercial use by authorized parties | Allowed |
+
+---
+
+## Authorized commercial parties
+
+Commercial rights are reserved to:
+
+1. **Helmut Chaparro Sandoval** (original author and rights holder)  
+2. **Devkit Electronics S.A.S.** (authorized commercial partner)
+
+Any other person or entity requires a separate written commercial license signed by the Licensor.
+
+---
+
+## Required attribution
+
+When redistributing under non-commercial terms, include this statement visibly:
+
+> Originally designed by Helmut Chaparro Sandoval — ProtoBot Project.
+
+---
+
+## Full license text
 
 Copyright (c) 2026 Helmut Chaparro Sandoval.  
 All rights reserved.
@@ -79,8 +124,3 @@ If any provision of this License is held unenforceable, the remaining provisions
 ### 12) Entire Agreement
 
 This License constitutes the entire agreement regarding the Project rights granted herein and supersedes prior statements regarding such rights, except for separate written agreements signed by the Licensor.
-
----
-
-**Note:** Some tooling expects a plain-text file named `LICENSE` at the repository root. This repository includes both [LICENSE](LICENSE) (no extension) and this Markdown copy for readability on GitHub.
-
