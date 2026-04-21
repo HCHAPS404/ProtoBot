@@ -1,529 +1,273 @@
-# 🤖 ProtoBot
+<!-- Cover: banner + badges + quick nav — keep paths relative for GitHub rendering -->
+<p align="center">
+  <picture>
+    <source srcset="docs/assets/branding/readme-hero-banner.svg" type="image/svg+xml" />
+    <img src="docs/assets/branding/readme-hero-banner.png" alt="ProtoBot — modular research robotics banner" width="100%" />
+  </picture>
+</p>
 
-<div align="center">
+<p align="center">
+  <picture>
+    <source srcset="docs/assets/branding/protobot-mark.svg" type="image/svg+xml" />
+    <img src="docs/assets/branding/protobot-mark.png" alt="ProtoBot mark" width="72" height="72" />
+  </picture>
+</p>
 
-![ProtoBot Banner](https://img.shields.io/badge/ProtoBot-Modular%20Research%20Robot-blue?style=for-the-badge&logo=ros&logoColor=white)
+<p align="center">
+  <a href="LICENSE.md"><img src="https://img.shields.io/badge/License-CRCL--ProtoBot--v1-00d4aa?style=for-the-badge" alt="License CRCL-ProtoBot-v1" /></a>
+  <a href="https://docs.ros.org/en/jazzy/"><img src="https://img.shields.io/badge/ROS%202-Jazzy-22314e?style=for-the-badge&logo=ros" alt="ROS 2 Jazzy" /></a>
+  <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-334155?style=for-the-badge" alt="Linux Windows macOS" />
+</p>
 
-[![ROS2](https://img.shields.io/badge/ROS2-Jazzy-22314E?style=flat-square&logo=ros&logoColor=white)](https://docs.ros.org/en/jazzy/)
-[![STM32](https://img.shields.io/badge/STM32-N657X0--Q-03234B?style=flat-square&logo=stmicroelectronics&logoColor=white)](https://www.st.com/)
-[![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-5-A22846?style=flat-square&logo=raspberrypi&logoColor=white)](https://www.raspberrypi.com/)
-[![micro-ROS](https://img.shields.io/badge/micro--ROS-Enabled-6D28D9?style=flat-square)](https://micro.ros.org/)
-[![License](https://img.shields.io/badge/License-ProtoBot%20Custom-orange?style=flat-square)](./LICENSE)
-[![Status](https://img.shields.io/badge/Status-Active%20Development-brightgreen?style=flat-square)]()
+<p align="center">
+  <img src="https://img.shields.io/badge/STM32-Nucleo%20N657-03234b?style=for-the-badge&logo=stmicroelectronics&logoColor=white" alt="STM32 Nucleo N657" />
+  <img src="https://img.shields.io/badge/Raspberry%20Pi-5-C51A4A?style=for-the-badge&logo=raspberrypi&logoColor=white" alt="Raspberry Pi 5" />
+  <img src="https://img.shields.io/badge/micro--ROS-layer%20%28optional%29-7C4DFF?style=for-the-badge" alt="micro-ROS optional layer" />
+  <img src="https://img.shields.io/badge/Repository-scaffold%20%28active%29-22c55e?style=for-the-badge" alt="Repository scaffold active" />
+</p>
 
-**An open modular robotics platform for research, education, and experimentation — powered by ROS 2 and real-time embedded control.**
+<p align="center">
+  <a href="#why-protobot"><b>Overview</b></a> |
+  <a href="#high-level-architecture"><b>Architecture</b></a> |
+  <a href="#hardware-cad--pcb"><b>Hardware</b></a> |
+  <a href="#repository-map"><b>Software stack</b></a> |
+  <a href="#ros-2-workspace-ros2_ws"><b>Getting started</b></a> |
+  <a href="#simulation-simulation"><b>Simulation</b></a> |
+  <a href="#protobot-ide-ideprotobot-ide"><b>IDE</b></a> |
+  <a href="#languages-docs-and-tooling"><b>Languages</b></a> |
+  <a href="#contributing--license"><b>Contributing</b></a> |
+  <a href="#authorship--commercial-rights"><b>License</b></a>
+</p>
 
-[Overview](#-overview) · [Architecture](#-system-architecture) · [Hardware](#-hardware) · [Software Stack](#-software-stack) · [Getting Started](#-getting-started) · [Applications](#-protobot-applications) · [Modules](#-modular-system) · [Contributing](#-contributing) · [License](#-license)
+> **A modular robotics stack for research, education, and product work** — dual compute (**ROS 2** on **Raspberry Pi 5** + real-time **STM32 N657**), **POGO-style modularity** (sensors / effectors), **audio & vision** pipelines, **ProtoBot IDE** (Electron + TypeScript) as a unified shell for ROS 2 and MCU workflows, and **host terminals** that remain first-class for `ros2`, `colcon`, and `rviz2`.
 
-</div>
+**ProtoBot** is a professional-grade, **modular autonomous robotics platform**: high-level perception, navigation, and HMI on the **SBC**, deterministic sensing and actuation on the **MCU**, with a **CRCL-ProtoBot-v1** license model (commercial rights reserved — see [LICENSE.md](LICENSE.md)).
 
----
-
-## Overview
-
-**ProtoBot** is an open, modular robotic platform designed to bridge the gap between expensive commercial research robots and accessible, hackable hardware. Built around a **dual-brain architecture** — a **Raspberry Pi 5** running ROS 2 as the high-level cognitive layer, and an **STM32 Nucleo N657X0-Q** running an RTOS as the real-time embedded controller — ProtoBot is engineered to be reconfigured, extended, and repurposed with minimal effort.
-
-Whether you are exploring SLAM, navigation, computer vision, manipulator control, multi-robot coordination, or embedded systems research, ProtoBot gives you a unified, documented, and community-supported platform to do it on.
-
-### Key Goals
-
-- **Modularity first** — swap sensors, actuators, and compute modules without redesigning the base platform
-- **Research-grade** — suitable for academic research, lab environments, and serious experimentation
-- **Accessible** — significantly lower cost barrier than commercial equivalents (e.g., TurtleBot 4, Spot, Stretch)
-- **Full-stack** — from bare-metal firmware to ROS 2 nodes to desktop/mobile applications
-- **Open recreation** — free to build for personal or educational use, with attribution required
-
----
-
-## System Architecture
-
-ProtoBot follows a **hierarchical dual-processor architecture** inspired by modern collaborative robotics systems:
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    HIGH-LEVEL LAYER                     │
-│                   Raspberry Pi 5                        │
-│                                                         │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────┐  │
-│  │  ROS 2   │  │  Nav2    │  │  OpenCV  │  │  Apps  │  │
-│  │  Jazzy   │  │  Stack   │  │  Vision  │  │  Layer │  │
-│  └──────────┘  └──────────┘  └──────────┘  └────────┘  │
-│         │                                               │
-│   micro-ROS Agent (UART / USB / SPI)                    │
-└─────────────────────┬───────────────────────────────────┘
-                      │  Serial / USB CDC / SPI
-┌─────────────────────▼───────────────────────────────────┐
-│                 REAL-TIME LAYER                         │
-│             STM32 Nucleo N657X0-Q                       │
-│                                                         │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────┐  │
-│  │ micro-ROS│  │ FreeRTOS │  │ Motor    │  │ Sensor │  │
-│  │  Client  │  │  / Zephyr│  │ Control  │  │  HAL   │  │
-│  └──────────┘  └──────────┘  └──────────┘  └────────┘  │
-│                                                         │
-│  PWM · Encoders · IMU · LIDAR · Servo · CAN · I2C      │
-└─────────────────────────────────────────────────────────┘
-```
-
-### Communication Protocol Stack
-
-| Layer | Protocol | Purpose | Typical Speed |
-|-------|----------|---------|---------------|
-| ROS 2 ↔ micro-ROS | UART / USB CDC | Topic & service bridging | 4 Mbps |
-| STM32 ↔ IMU | SPI / I2C | Inertial sensor data | 10 MHz SPI |
-| STM32 ↔ Motor Driver | PWM + GPIO | Speed & direction control | ~20 kHz PWM |
-| STM32 ↔ Encoders | Quadrature / Timer | Position feedback | Hardware timer |
-| STM32 ↔ LIDAR | UART / SPI | Ranging data | 115200 baud |
-| RPi5 ↔ Camera | CSI / USB | Vision input | 60 fps / 4K |
-| RPi5 ↔ PC/Mobile | WiFi / Ethernet | App communication | 100+ Mbps |
+Originally designed by Helmut Chaparro Sandoval — ProtoBot Project.
 
 ---
 
-##  Hardware
+## Languages, docs, and tooling
 
-### Core Compute
+| Area | Human language | Programming / config | Notes |
+|------|----------------|----------------------|--------|
+| **Repository docs** | **English** (default for `README`, `docs/`, `CONTRIBUTING`) | Markdown | Keeps issues, PRs, and search consistent for international collaborators. |
+| **Legal** | **English** | `LICENSE`, `LICENSE.md` | CRCL-ProtoBot-v1 text is authoritative in English. |
+| **ROS 2 packages** | English in `package.xml` descriptions | **C++** (rclcpp nodes), **Python 3** (launch files) | Messages in `protobot_msgs` use `.msg` / future `.srv` / `.action`. |
+| **Build system** | — | **CMake**, **ament** | `colcon` orchestrates the workspace. |
+| **Firmware** | English comments | **C11**, **CMake**, optional **arm-none-eabi-gcc** | FreeRTOS-oriented stubs; Zephyr path is phase 2 (`west`). |
+| **ProtoBot IDE** | English UI strings | **TypeScript**, **Electron**, **Vite**, **CSS** (`design/tokens.css`) | Renderer imports shared design tokens from `/design`. |
+| **Automation & CI** | English job names | **YAML** (GitHub Actions), **Dockerfile** | CI builds selected packages inside `ros:jazzy-ros-base`. |
+| **Install helpers** | English comments | **Bash**, **PowerShell**, **POSIX shell** (`.command`) | Extend with distro-specific ROS bootstrap. |
 
-| Component | Model | Role |
-|-----------|-------|------|
-| High-Level SBC | Raspberry Pi 5 (8 GB) | ROS 2, Navigation, Vision, App Server |
-| Real-Time MCU | STM32 Nucleo N657X0-Q | Motor control, sensor fusion, RTOS tasks |
-
-### STM32 N657X0-Q Highlights
-
-- **ARM Cortex-M55** with Helium DSP/ML extensions
-- Up to **800 MHz** core clock
-- **4 MB Flash**, **2.9 MB SRAM**
-- Hardware FPU — ideal for PID loops and sensor fusion
-- Multiple UARTs, SPI, I2C, CAN FD, USB FS/HS
-- ETM/SWV trace support for real-time debugging
-
-### Base Hardware Bill of Materials (BOM)
-
-| # | Component | Qty | Notes |
-|---|-----------|-----|-------|
-| 1 | Raspberry Pi 5 (8 GB) | 1 | Main compute |
-| 2 | STM32 Nucleo N657X0-Q | 1 | Embedded controller |
-| 3 | DC Gearmotor with encoder | 2–4 | Differential / mecanum drive |
-| 4 | L298N or DRV8833 Motor Driver | 1–2 | PWM motor control |
-| 5 | IMU (MPU-6050 / ICM-42688) | 1 | Inertial sensing |
-| 6 | LIDAR (RPLIDAR A1/A2/C1) | 1 (optional) | 2D/3D mapping |
-| 7 | Depth Camera (Intel RealSense / OAK-D) | 1 (optional) | 3D perception |
-| 8 | LiPo Battery 11.1V / 5000 mAh | 1 | Main power |
-| 9 | 5V / 5A Buck Converter | 1 | RPi5 power rail |
-| 10 | 3.3V LDO | 1 | STM32 auxiliary |
-| 11 | Chassis (custom / 3D printed) | 1 | Modular frame |
-| 12 | OLED Display 128x64 (optional) | 1 | Local status display |
-
->  A full Mouser/DigiKey BOM with part numbers is available in `/hardware/BOM.xlsx`
-
-### Expansion Modules
-
-ProtoBot supports hot-swappable physical modules attached to a standardized mounting rail and connector interface:
-
-| Module | Description |
-|--------|-------------|
-| `MOD-ARM` | 4 or 6 DOF robotic arm attachment |
-| `MOD-VISION` | Stereo camera + depth sensor boom |
-| `MOD-LIDAR` | LIDAR tower with servo pan |
-| `MOD-GRIPPER` | Servo-actuated parallel gripper |
-| `MOD-IMU-EXT` | High-precision 9-DOF IMU expansion |
-| `MOD-AUDIO` | Microphone array + speaker for HRI |
-| `MOD-MECANUM` | Mecanum wheel kit for omnidirectional drive |
-| `MOD-TRAIL` | Differential trail-following sensor array |
+Identifiers (package names, topics, branch names) stay **ASCII English** (`protobot_*`, `colcon`, …) to avoid toolchain encoding issues on embedded hosts.
 
 ---
 
-## Software Stack
+## Table of contents
 
-### High-Level (Raspberry Pi 5)
-
-```
-OS:       Ubuntu Server 24.04 LTS (64-bit ARM)
-ROS:      ROS 2 Jazzy Jalisco
-Nav:      Nav2 (navigation2)
-SLAM:     slam_toolbox / Cartographer
-Vision:   OpenCV 4.x, MediaPipe, Intel RealSense SDK
-Bridge:   micro-ROS Agent (serial transport)
-Apps:     ProtoBot Desktop App (Electron/React)
-          ProtoBot Mobile App (Flutter)
-```
-
-### Real-Time (STM32 N657X0-Q)
-
-```
-RTOS:     FreeRTOS (primary) / Zephyr RTOS (optional)
-Framework:micro-ROS client (via STM32CubeIDE)
-HAL:      STM32 HAL + LL drivers
-IDE:      STM32CubeIDE + STM32CubeMX
-Debug:    SWD + ST-LINK V3 / OpenOCD
-```
-
-### ROS 2 Package Structure
-
-```
-protobot_ws/
-├── src/
-│   ├── protobot_bringup/        # Launch files & system startup
-│   ├── protobot_description/    # URDF / Xacro robot model
-│   ├── protobot_hardware/       # Hardware interface (ros2_control)
-│   ├── protobot_navigation/     # Nav2 configuration & maps
-│   ├── protobot_slam/           # SLAM configuration
-│   ├── protobot_vision/         # Computer vision nodes
-│   ├── protobot_teleop/         # Teleoperation nodes
-│   ├── protobot_diagnostics/    # System health monitoring
-│   └── protobot_msgs/           # Custom ROS 2 messages & services
-├── firmware/
-│   ├── stm32_protobot/          # STM32CubeIDE project
-│   │   ├── Core/
-│   │   ├── Middlewares/         # FreeRTOS, micro-ROS
-│   │   └── Drivers/
-├── hardware/
-│   ├── schematics/              # KiCad schematics
-│   ├── pcb/                     # Custom PCB layouts
-│   ├── models/                  # 3D printable STL/STEP files
-│   └── BOM.xlsx
-├── apps/
-│   ├── desktop/                 # ProtoBot Desktop App
-│   └── mobile/                  # ProtoBot Mobile App
-└── docs/
-    ├── guides/
-    └── api/
-```
+- [Languages, docs, and tooling](#languages-docs-and-tooling)
+- [Why ProtoBot](#why-protobot)
+- [High-level architecture](#high-level-architecture)
+- [Hardware (CAD & PCB)](#hardware-cad--pcb)
+- [Repository map](#repository-map)
+- [ROS 2 workspace (`ros2_ws`)](#ros-2-workspace-ros2_ws)
+- [Firmware (`firmware/`)](#firmware-firmware)
+- [ProtoBot IDE (`ide/protobot-ide`)](#protobot-ide-ideprotobot-ide)
+- [Design system (`design/`)](#design-system-design)
+- [Simulation (`simulation/`)](#simulation-simulation)
+- [Installers & Docker](#installers--docker)
+- [Building & CI](#building--ci)
+- [Contributing & license](#contributing--license)
+- [Authorship & commercial rights](#authorship--commercial-rights)
 
 ---
 
-## Getting Started
+## Why ProtoBot
 
-### Prerequisites
+| Goal | How this repo supports it |
+|------|---------------------------|
+| **One codebase for brain + realtime** | ROS 2 packages for perception, navigation, HMI, AI, power, and a bridge toward the MCU; STM32 tasks for sensors, actuators, power, and micro-ROS transport stubs. |
+| **Faster onboarding** | Colcon workspace, meta-package `protobot_core`, bringup launch, message package `protobot_msgs`, and heartbeat nodes to validate a build. |
+| **Consistent UX** | Shared design tokens (`design/tokens.*`) consumed by documentation and the IDE renderer. |
+| **Clear legal posture** | **CRCL-ProtoBot-v1**: commercial use is restricted to authorized holders; third parties may use non-commercially with attribution. See [LICENSE.md](LICENSE.md) and plain [LICENSE](LICENSE). |
 
-- Raspberry Pi 5 with Ubuntu 24.04 flashed (via Raspberry Pi Imager)
-- STM32 Nucleo N657X0-Q board + ST-LINK V3
-- STM32CubeIDE installed on your development machine
-- Git, Docker (optional, for micro-ROS agent)
+---
 
-### 1. Set Up the Raspberry Pi 5
+## High-level architecture
+
+Compute is split between a **Linux SBC** (ROS 2 graph, vision, AI, networking) and an **MCU** (deterministic control, power telemetry, optional micro-ROS agent). The IDE is the single entry point for day-to-day development on both sides.
+
+```mermaid
+flowchart LR
+  subgraph host [Host_RPi5]
+    ROS2[ROS2_graph]
+    IDE[ProtoBot_IDE]
+    Bridge[protobot_stm32_bridge]
+  end
+  subgraph mcu [STM32_MCU]
+    RTOS[FreeRTOS_or_Zephyr]
+    Tasks[Sensor_actuator_tasks]
+    uROS[micro_ROS_optional]
+  end
+  IDE --> ROS2
+  ROS2 --> Bridge
+  Bridge <-->|UART_SPI_IPC| uROS
+  RTOS --> Tasks
+  Tasks --> uROS
+```
+
+**Reference ROS 2 distro:** **Jazzy** (aligned with Ubuntu 24.04 and long-term documentation quality). If you target **Humble**, audit each package’s dependencies and any distro-specific package names before building.
+
+---
+
+## Repository map
+
+| Path | Purpose |
+|------|---------|
+| [design/](design/) | Visual identity: `tokens.json` / `tokens.css` for docs, badges, and the IDE. |
+| [docs/](docs/) | Architecture notes, IDE design, license header templates. |
+| [docs/ide/ARCHITECTURE.md](docs/ide/ARCHITECTURE.md) | ProtoBot IDE layering, STM32 profiles, ROS terminal strategy. |
+| [hardware/](hardware/) | Physical product assets: mechanical CAD/3D and electronics (PCB) organized by maturity stage. |
+| [ros2_ws/](ros2_ws/) | Colcon workspace; `protobot_*` packages and `protobot_msgs`. |
+| [firmware/](firmware/) | STM32 (FreeRTOS-oriented CMake layout) and Zephyr (`west.yml`, phase 2). |
+| [ide/protobot-ide/](ide/protobot-ide/) | Electron + Vite + TypeScript desktop shell. |
+| [simulation/](simulation/) | Worlds and models for Gazebo / Webots (stubs). |
+| [tools/install/](tools/install/) | Cross-platform install script stubs (`.sh`, `.ps1`, `.command`). |
+| [docker/](docker/) | Dev-oriented container recipe (Jazzy base). |
+| [.github/workflows/](.github/workflows/) | CI workflow (build selected packages in ROS container). |
+
+---
+
+## Hardware (CAD & PCB)
+
+Hardware artifacts are now explicitly included in the repository under `hardware/`, separated by discipline and project maturity:
+
+| Path | Purpose |
+|------|---------|
+| [hardware/mechanical/](hardware/mechanical/) | CAD and 3D assets (`.step`, `.stl`, native CAD files), enclosure concepts, and assembly iterations. |
+| [hardware/mechanical/concept/](hardware/mechanical/concept/) | Early exploration models and dimensional studies. |
+| [hardware/mechanical/prototypes/](hardware/mechanical/prototypes/) | Printable/machinable prototype iterations validated in lab. |
+| [hardware/mechanical/production/](hardware/mechanical/production/) | Released mechanical baselines and manufacturing-ready revisions. |
+| [hardware/pcb/](hardware/pcb/) | Electronics design sources (`.kicad_sch`, `.kicad_pcb`, BOM docs, fabrication outputs). |
+| [hardware/pcb/concept/](hardware/pcb/concept/) | Block-level schematics and early board explorations. |
+| [hardware/pcb/prototypes/](hardware/pcb/prototypes/) | Bring-up boards and pre-production electrical validation. |
+| [hardware/pcb/production/](hardware/pcb/production/) | Released PCB revisions for manufacturing and assembly. |
+
+Store generated fabrication artifacts in dedicated release bundles, and keep source design files versioned per board/mechanical module.
+
+---
+
+## ROS 2 workspace (`ros2_ws`)
+
+The workspace follows the standard **`src/`** layout for `colcon`.
+
+**Included packages (scaffold):**
+
+| Package | Role |
+|---------|------|
+| `protobot_msgs` | Shared `.msg` types (battery, module descriptor, MCU telemetry frame). |
+| `protobot_core` | Meta-package depending on the other `protobot_*` packages. |
+| `protobot_description` | URDF/Xacro and a minimal `robot_state_publisher` launch. |
+| `protobot_bringup` | Example stack launch + default YAML parameters. |
+| `protobot_hmi`, `protobot_audio`, `protobot_vision`, `protobot_navigation`, `protobot_power`, `protobot_modular`, `protobot_stm32_bridge`, `protobot_ai`, `protobot_diagnostics` | C++ heartbeat nodes as placeholders for future functionality. |
+
+**Build (Linux, Jazzy installed):**
 
 ```bash
-# Flash Ubuntu 24.04 Server to SD card / NVMe
-# Then SSH into the Pi and run:
-
-# Install ROS 2 Jazzy
-sudo apt update && sudo apt install -y software-properties-common
-sudo add-apt-repository universe
-sudo apt update
-curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
-  -o /usr/share/keyrings/ros-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
-  http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" \
-  | sudo tee /etc/apt/sources.list.d/ros2.list
-sudo apt update
-sudo apt install -y ros-jazzy-desktop ros-jazzy-nav2-bringup \
-  ros-jazzy-slam-toolbox ros-jazzy-ros2-control \
-  ros-jazzy-ros2-controllers
+cd ros2_ws
 source /opt/ros/jazzy/setup.bash
-```
-
-### 2. Clone ProtoBot Workspace
-
-```bash
-mkdir -p ~/protobot_ws/src && cd ~/protobot_ws/src
-git clone https://github.com/YOUR_USERNAME/protobot.git .
-cd ~/protobot_ws
-rosdep install --from-paths src --ignore-src -r -y
 colcon build --symlink-install
 source install/setup.bash
+ros2 launch protobot_bringup protobot_stack.launch.py
 ```
 
-### 3. Start the micro-ROS Agent
+**Run a single heartbeat (example):**
 
 ```bash
-# Via Docker (easiest)
-docker run -it --rm -v /dev:/dev --privileged --net=host \
-  microros/micro-ros-agent:jazzy serial \
-  --dev /dev/ttyAMA0 -b 4000000
-
-# Or natively
-sudo apt install ros-jazzy-micro-ros-agent
-ros2 run micro_ros_agent micro_ros_agent serial \
-  --dev /dev/ttyAMA0 --baud 4000000
-```
-
-### 4. Flash the STM32 Firmware
-
-```bash
-# Open firmware/stm32_protobot/ in STM32CubeIDE
-# Connect ST-LINK V3 to the Nucleo board
-# Build and Flash via CubeIDE or:
-openocd -f interface/stlink.cfg \
-        -f target/stm32n6x.cfg \
-        -c "program build/stm32_protobot.elf verify reset exit"
-```
-
-### 5. Launch ProtoBot
-
-```bash
-# Full system bringup
-ros2 launch protobot_bringup protobot.launch.py
-
-# With SLAM
-ros2 launch protobot_bringup protobot.launch.py \
-  slam:=true use_rviz:=true
-
-# Teleoperation only
-ros2 launch protobot_teleop keyboard_teleop.launch.py
+ros2 run protobot_hmi hmi_heartbeat
 ```
 
 ---
 
-## ProtoBot Applications
+## Firmware (`firmware/`)
 
-ProtoBot ships with a first-party application ecosystem designed to make robot programming and monitoring accessible to all skill levels.
+| Path | Contents |
+|------|----------|
+| [firmware/stm32/](firmware/stm32/) | CMake entrypoint, `Core/` with named RTOS-oriented task stubs (`task_power_mgmt`, `task_sensor_fusion`, …), and folders reserved for HAL/Drivers. |
+| [firmware/zephyr/](firmware/zephyr/) | Minimal `west.yml` placeholder for a future Zephyr application. |
 
-### ProtoBot Desktop App
+Toolchain, flashing, and micro-ROS wiring are documented in each folder’s `README.md`. Replace stubs with STM32Cube-generated HAL and your board’s linker script when you move from scaffold to product firmware.
 
-> Built with **Electron + React + TypeScript**
+---
 
-| Feature | Description |
-|---------|-------------|
-| Real-time Dashboard | Live topic data, sensor feeds, battery, diagnostics |
-| Node Graph Viewer | Visual ROS 2 computation graph |
-| Map Editor | Interactive occupancy grid editing |
-| Mission Planner | Drag-and-drop waypoint navigation |
-| Code IDE | Browser-based Python/C++ editor with robot context |
-| Log Viewer | Filtered, searchable ROS 2 log stream |
-| Parameter Tuner | Live PID and Nav2 parameter adjustment |
-| Module Manager | Detect and configure attached hardware modules |
+## ProtoBot IDE (`ide/protobot-ide`)
+
+Cross-platform **Electron + TypeScript** application:
+
+- **ROS 2 side (planned slices):** workspace detection, `colcon` tasks, graph inspection — always alongside a **real host terminal** (`ros2`, `rviz2`, etc.).
+- **STM32 side (planned slices):** CMake build, serial monitor, OpenOCD/GDB, optional Zephyr `west` profile, optional **micro-ROS** layer on top of the chosen RTOS.
+
+**Local development:**
 
 ```bash
-cd apps/desktop
+cd ide/protobot-ide
 npm install
-npm run dev        # Development
-npm run build      # Production build
+npm run build
+npm run dev
 ```
 
-### ProtoBot Mobile App
+`dev` runs Vite and Electron with `PROTOBOT_DEV=1` so the window loads the dev server URL. For production-like runs, build first and launch Electron against `dist/renderer/index.html` (see [ide/protobot-ide/README.md](ide/protobot-ide/README.md)).
 
-> Built with **Flutter (iOS + Android)**
-
-| Feature | Description |
-|---------|-------------|
-| Joystick Control | Virtual joystick for manual teleoperation |
-| Camera Stream | Live video feed from robot cameras |
-| Robot Status | Battery, pose, active nodes at a glance |
-| Mission Monitor | Track autonomous navigation missions |
-| Push Notifications | Alerts for task completion or hardware faults |
-| Bluetooth Pairing | Initial setup without network configuration |
-
-```bash
-cd apps/mobile
-flutter pub get
-flutter run         # Run on connected device
-flutter build apk   # Android release build
-flutter build ios   # iOS release build
-```
-
-### ProtoBot API
-
-ProtoBot exposes a REST + WebSocket API from the RPi5 for third-party integrations:
-
-```
-Base URL: http://protobot.local:8080/api/v1
-
-GET  /status              → System health, battery, uptime
-GET  /topics              → Active ROS 2 topics list
-POST /cmd_vel             → Send velocity commands
-GET  /map                 → Current occupancy grid (PNG/PGM)
-POST /navigate            → Send navigation goal (x, y, theta)
-WS   /stream/camera       → Live MJPEG camera stream
-WS   /stream/telemetry    → Real-time sensor telemetry
-```
+Read the full design write-up in [docs/ide/ARCHITECTURE.md](docs/ide/ARCHITECTURE.md).
 
 ---
 
-##  Modular System
+## Design system (`design/`)
 
-ProtoBot's modularity operates at three levels:
+- **`tokens.json`** — machine-readable palette, radii, spacing, and font stacks.
+- **`tokens.css`** — CSS custom properties (`--pb-*`) imported by the IDE renderer for a consistent dark, high-contrast robotics UI.
 
-### Level 1 — Physical Modules
-Standard mounting slots on the chassis frame accept bolt-on hardware modules. Each module exposes a standard 12-pin Molex connector carrying power (5V/12V), UART, I2C, and GPIO.
-
-### Level 2 — Firmware Modules
-The STM32 firmware uses a task-based RTOS architecture. Each hardware module corresponds to a FreeRTOS task that can be enabled or disabled via compile flags or dynamic configuration:
-
-```c
-// protobot_config.h — enable/disable modules
-#define PROTOBOT_MOD_ENCODER    1
-#define PROTOBOT_MOD_IMU        1
-#define PROTOBOT_MOD_LIDAR      0   // Disabled if not attached
-#define PROTOBOT_MOD_ARM        0
-#define PROTOBOT_MOD_GRIPPER    0
-```
-
-### Level 3 — ROS 2 Modules
-Each hardware module maps to a ROS 2 launch argument and set of nodes. Modules self-announce via `/protobot/module_registry` topic at startup:
-
-```bash
-# Launch with specific modules
-ros2 launch protobot_bringup protobot.launch.py \
-  enable_lidar:=true \
-  enable_arm:=true \
-  enable_depth_camera:=true
-```
+Use the same tokens in screenshots, diagrams, and marketing materials so the repo and the IDE feel like one product.
 
 ---
 
-## Supported Research Use Cases
+## Simulation (`simulation/`)
 
-ProtoBot has been designed to support the following research and educational domains out of the box:
-
-| Domain | Supported Capabilities |
-|--------|----------------------|
-| Mobile Robotics | Differential drive, mecanum, odometry, SLAM |
-| Computer Vision | Object detection, visual SLAM, depth estimation |
-| Human-Robot Interaction | Voice I/O, gesture recognition, face tracking |
-| Manipulation | Arm control, grasp planning, workspace mapping |
-| Multi-Robot Systems | ROS 2 namespacing, fleet coordination |
-| Embedded Systems | RTOS task analysis, real-time profiling |
-| Machine Learning | Edge inference with RPi5 NPU and Helium extensions |
-| Sensor Fusion | IMU + odometry + LIDAR EKF integration |
+Placeholder directories for **worlds** and **models**. ROS launches and robot description live under `ros2_ws/src/protobot_description` until simulation assets grow here.
 
 ---
 
-## ROS 2 Topics Reference
+## Installers & Docker
 
-| Topic | Type | Direction | Description |
-|-------|------|-----------|-------------|
-| `/cmd_vel` | `geometry_msgs/Twist` | → STM32 | Velocity command |
-| `/odom` | `nav_msgs/Odometry` | ← STM32 | Wheel odometry |
-| `/imu/data` | `sensor_msgs/Imu` | ← STM32 | IMU data |
-| `/scan` | `sensor_msgs/LaserScan` | ← STM32/RPi | LIDAR scan |
-| `/battery_state` | `sensor_msgs/BatteryState` | ← STM32 | Battery telemetry |
-| `/joint_states` | `sensor_msgs/JointState` | ↔ Both | Joint positions |
-| `/camera/image_raw` | `sensor_msgs/Image` | ← RPi5 | Camera feed |
-| `/protobot/module_registry` | `protobot_msgs/ModuleList` | ← STM32 | Attached modules |
-| `/protobot/diagnostics` | `diagnostic_msgs/DiagnosticArray` | ← Both | System diagnostics |
+| Artifact | Description |
+|----------|-------------|
+| [tools/install/protobot-ros2-install.sh](tools/install/protobot-ros2-install.sh) | POSIX stub — extend with distro detection, ROS apt sources, and `colcon` setup. |
+| [tools/install/protobot-ros2-install.ps1](tools/install/protobot-ros2-install.ps1) | Windows stub for native or hybrid setups. |
+| [tools/install/protobot-ros2-install.command](tools/install/protobot-ros2-install.command) | macOS-friendly entrypoint stub. |
+| [docker/Dockerfile](docker/Dockerfile) | `ros:jazzy-ros-base` image copying `ros2_ws/src` into `/ros2_ws` for reproducible builds. |
 
 ---
 
-## Development Guide
+## Building & CI
 
-### Setting Up a Development Environment (Host PC)
-
-```bash
-# Install ROS 2 Jazzy on Ubuntu 24.04
-# (same steps as RPi5, above)
-
-# Install simulation dependencies
-sudo apt install -y ros-jazzy-gazebo-ros-pkgs \
-  ros-jazzy-rviz2 ros-jazzy-rqt*
-
-# Run in simulation (no hardware needed)
-ros2 launch protobot_bringup protobot_sim.launch.py
-```
-
-### Firmware Development Workflow
-
-```
-[Write C code in STM32CubeIDE]
-        ↓
-[Build → Flash via ST-LINK]
-        ↓
-[Monitor via SWV / UART console]
-        ↓
-[Verify ROS 2 topics on RPi5]
-        ↓
-[Tune PID / RTOS task timing]
-```
-
-### Adding a New Hardware Module
-
-1. Design the physical mount (STL in `/hardware/models/`)
-2. Wire to the 12-pin standard connector
-3. Add a FreeRTOS task in `/firmware/stm32_protobot/Modules/`
-4. Add micro-ROS publisher/subscriber for the new data
-5. Create a ROS 2 package in `src/protobot_YOUR_MODULE/`
-6. Register the module in `protobot_msgs/ModuleDescriptor`
-7. Add launch argument to `protobot.launch.py`
-8. Document in `/docs/modules/YOUR_MODULE.md`
+GitHub Actions workflow [.github/workflows/ci.yml](.github/workflows/ci.yml) builds **`protobot_msgs`** inside a **Jazzy** container to keep the interface package continuously verifiable. Expand the matrix with more packages as dependencies stabilize.
 
 ---
 
-## Contributing
+## Contributing & license
 
-Contributions are warmly welcome! This project thrives on community expertise.
-
-### How to Contribute
-
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/my-new-module`
-3. **Commit** changes with clear messages
-4. **Test** on real hardware or simulation
-5. **Open a Pull Request** with description, photos/videos if applicable
-
-### Contribution Guidelines
-
-- Follow ROS 2 coding style for Python (`ruff`) and C++ (`clang-format`)
-- STM32 firmware follows MISRA-C guidelines where applicable
-- All new modules must include documentation in `/docs/modules/`
-- Hardware designs must be submitted in open formats (KiCad, FreeCAD, STL)
-- **Attribution required** — do not remove author credits from source files
-
-### Issues & Feature Requests
-
-Use GitHub Issues with the following labels:
-- `bug` — Something isn't working
-- `enhancement` — New feature or module idea
-- `documentation` — Docs improvements
-- `firmware` — STM32 / RTOS related
-- `research` — Academic or experimental use case
+Contributions must comply with **CRCL-ProtoBot-v1**: non-commercial use for third parties with full attribution; commercial use only for authorized holders. See [CONTRIBUTING.md](CONTRIBUTING.md), [LICENSE.md](LICENSE.md), and [docs/templates/license-header.txt](docs/templates/license-header.txt) for headers in new source files.
 
 ---
 
-## License
+## Authorship & commercial rights
 
-ProtoBot is released under the **ProtoBot Non-Commercial Open Recreation License (PNCORL)**.
+| Role | Party |
+|------|--------|
+| **Original author & lead designer** | Helmut Chaparro Sandoval |
+| **Authorized commercial partner** | Devkit Electronics S.A.S. |
 
-In brief:
-- ✅ You may build, modify, and use ProtoBot for personal, educational, or research purposes **free of charge**
-- ✅ You may share your builds publicly with **proper attribution** to the original author
-- ❌ You may **not** sell ProtoBot or any derivative product commercially without explicit written permission from the author
-- ❌ You may **not** remove or alter author attribution notices
+Required attribution string in derivatives (non-commercial):
 
-See the full [LICENSE](./LICENSE) file for complete terms.
-
----
-
-##Author & Credits
-
-**ProtoBot** was conceived, designed, and developed by its original author, Helmut Chaparro Sandoval.
-
-All hardware designs, firmware, software, documentation, and associated intellectual property are the exclusive commercial property of the original author. Recreational and research use is granted to the public under the terms described in the LICENSE file.
-
-If you build a ProtoBot, tag your project with `#ProtoBot` and feel free to open a GitHub Discussion to share your work — the community loves to see builds!
-
----
-
-## 📚 Resources
-
-| Resource | Link |
-|----------|------|
-| ROS 2 Jazzy Docs | https://docs.ros.org/en/jazzy/ |
-| micro-ROS | https://micro.ros.org/ |
-| Nav2 | https://nav2.ros.org/ |
-| STM32 Nucleo N657X0-Q | https://www.st.com/en/evaluation-tools/nucleo-n657x0-q.html |
-| STM32CubeIDE | https://www.st.com/en/development-tools/stm32cubeide.html |
-| FreeRTOS | https://www.freertos.org/ |
-| Raspberry Pi 5 | https://www.raspberrypi.com/products/raspberry-pi-5/ |
-| RPLIDAR SDK | https://github.com/slamtec/rplidar_sdk |
-| slam_toolbox | https://github.com/SteveMacenski/slam_toolbox |
-| Flutter | https://flutter.dev/ |
-
----
-
-<div align="center">
-
-**ProtoBot** — *Build it. Break it. Learn from it.*
-
-Made with ❤️ for the robotics community.
-
-</div>
+> Originally designed by Helmut Chaparro Sandoval — ProtoBot Project.
